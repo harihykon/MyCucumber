@@ -1,0 +1,57 @@
+package executionengine;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import excelUtilities.Excelutli;
+import keywordDriven.Actionkeyword;
+
+
+public class Engine {
+	
+	Actionkeyword actionkeyword;
+	Method[] methods;
+	static String getcellvalueexcel;
+	
+	//public void getkeywordsfromactions()
+	public Engine()
+	{
+		actionkeyword = new Actionkeyword();
+		
+		methods = actionkeyword.getClass().getMethods();
+		
+	}
+	
+	public  void executekeword() throws IllegalAccessException, InvocationTargetException
+	{
+		for (int i=0; i<methods.length; i++)
+		{
+		if(methods[i].getName().equalsIgnoreCase(getcellvalueexcel))
+		{
+			methods[i].invoke(actionkeyword);
+			break;
+		}
+		}
+		
+	}
+	
+	public static void main(String[] args) throws IOException, IllegalAccessException, InvocationTargetException
+	{
+		Excelutli uti = new Excelutli();
+		uti.readexce("F:\\Studies\\Data - Copy.xlsx");
+		
+		Engine engine = new Engine();
+		
+//	engine.getkeywordsfromactions();
+		
+		for(int row=1; row<=6; row++)
+		{
+		getcellvalueexcel = uti.getcellvalueexcel(row, 3);
+		
+		engine.executekeword();
+				
+		}
+	}
+
+}
