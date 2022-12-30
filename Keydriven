@@ -49,9 +49,8 @@ public class Engine {
 		else if(getcellvalueexcel.equalsIgnoreCase("clicksearch"))
 		{
 			Actionkeyword.clicksearch();
-			else if (getcellvalueexcel.equalsIgnoreCase("quit"))
+		else if (getcellvalueexcel.equalsIgnoreCase("quit"))
 		{
 			Actionkeyword.quit();
 		}
-    }
-		}	
+   		}
