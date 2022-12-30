@@ -1,0 +1,47 @@
+package keywordDriven;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Actionkeyword {
+
+	static WebDriver driver;
+
+	public static void openbrowser()
+	{
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+	}
+	public static void gotourl()
+	{
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	public static void username()
+	{
+		WebElement findElement = driver.findElement(By.xpath("//input[@placeholder='Username']"));
+		findElement.sendKeys("Admin");
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	public static void password()
+	{
+		WebElement findElement = driver.findElement(By.xpath("//input[@placeholder='Password']"));
+		findElement.sendKeys("admin123");
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	public static void click()
+	{
+		WebElement findElement = driver.findElement(By.xpath("//*[@type='submit']"));
+		findElement.click();
+	}
+	public static void quit()
+	{
+		driver.quit();
+	}
+}
