@@ -1,0 +1,41 @@
+package excelUtilities;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Excelutli {
+
+	XSSFSheet sheet;
+	XSSFWorkbook workbook;
+	XSSFCell cell;
+		
+	public void readexce(String loc) throws IOException
+	{
+		FileInputStream file = new FileInputStream(loc);//"F:\\Studies\\Data - Copy.xlsx"
+
+		workbook = new XSSFWorkbook(file);
+
+		sheet = workbook.getSheet("Sheet1");
+	}
+	
+	public String getcellvalueexcel(int row, int col) throws IOException
+	{
+		cell = sheet.getRow(row).getCell(col);
+
+		String stringCellValue = cell.getStringCellValue();
+
+		System.out.println(stringCellValue);
+		return stringCellValue;
+
+	}
+
+	public static void main(String[] args) throws IOException
+	{
+		//Excelutli act = new Excelutli();
+		//act.readexcel();
+	}
+}
