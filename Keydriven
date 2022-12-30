@@ -1,0 +1,57 @@
+package executionengine;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import excelUtilities.Excelutli;
+
+public class Engine {
+	
+	public static void main(String[] args) throws IOException
+	{
+		Excelutli uti = new Excelutli();
+		uti.readexce("F:\\Studies\\Data - Copy.xlsx");
+		
+		Engine engine = new Engine();
+		
+		for(int row=1; row<=6; row++)
+		{
+		String getcellvalueexcel = uti.getcellvalueexcel(row, 3);
+		
+		if(getcellvalueexcel.equalsIgnoreCase("openbrowser"))
+		{
+			Actionkeyword.openbrowser();
+		}
+		else if (getcellvalueexcel.equalsIgnoreCase("gotourl"))
+		{
+			Actionkeyword.gotourl();
+		}
+		else if (getcellvalueexcel.equalsIgnoreCase("username"))
+		{
+			Actionkeyword.username();
+		}
+		else if (getcellvalueexcel.equalsIgnoreCase("password"))
+		{
+			Actionkeyword.password();
+		}
+		else if (getcellvalueexcel.equalsIgnoreCase("click"))
+		{
+			Actionkeyword.click();
+		}
+		else if(getcellvalueexcel.equalsIgnoreCase("clickdirectory"))
+		{
+			Actionkeyword.clickdirectory();
+		}
+		else if(getcellvalueexcel.equalsIgnoreCase("selectqalead"))
+		{
+			Actionkeyword.selectqalead();
+		}
+		else if(getcellvalueexcel.equalsIgnoreCase("clicksearch"))
+		{
+			Actionkeyword.clicksearch();
+			else if (getcellvalueexcel.equalsIgnoreCase("quit"))
+		{
+			Actionkeyword.quit();
+		}
+    }
+		}	
