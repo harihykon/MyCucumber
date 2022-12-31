@@ -1,0 +1,81 @@
+package keywordDriven2;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
+
+import constantsKeywordDriven.ConstantsKwd;
+import excelUtilities2.Excelutli2;
+import executionengine2.Engine2;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Actionkeyword2 {
+	static WebDriver driver;
+
+	public static void openbrowser()
+	{
+		switch(Excelutli2.datacolumnvalue)
+		{
+  	case ConstantsKwd.CHROME:
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		break;
+
+		case ConstantsKwd.FIREFOX:
+		WebDriverManager.firefoxdriver().setup();
+		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		break;
+
+		case ConstantsKwd.SAFARI:
+			WebDriverManager.safaridriver().setup();
+			driver = new SafariDriver();
+			driver.manage().window().maximize();
+			break;
+
+		case ConstantsKwd.MSEDGE:
+			WebDriverManager.edgedriver().setup();
+			driver = new EdgeDriver();
+			driver.manage().window().maximize();
+			break;
+
+    default:
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+			driver.manage().window().maximize();
+			break;
+		}
+		
+	}
+	public static void gotourl() throws InterruptedException
+	{
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		Thread.sleep(5000);
+	}
+	public static void username() throws InterruptedException
+	{
+		WebElement findElement = driver.findElement(Engine2.Locator);
+		findElement.sendKeys(Excelutli2.datacolumnvalue);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		Thread.sleep(5000);
+	}
+	public static void password() throws InterruptedException
+	{
+		WebElement findElement = driver.findElement(Engine2.Locator);
+		findElement.sendKeys(Excelutli2.datacolumnvalue);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		Thread.sleep(5000);
+	}
+	public static void quit()
+	{
+		driver.quit();
+	}
+}
