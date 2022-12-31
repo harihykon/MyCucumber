@@ -1,0 +1,87 @@
+package executionengine2;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.openqa.selenium.By;
+
+import constantsKeywordDriven.ConstantsKwd;
+import excelUtilities2.Excelutli2;
+import excelUtilities2.Locators;
+import keywordDriven2.Actionkeyword2;
+
+public class Engine2 {
+	
+	Actionkeyword2 actionkeyword;
+	Method[] methods;
+	public static By Locator;
+
+//	public void getkeywordsfromactions()
+	public Engine2()
+	{
+		actionkeyword = new Actionkeyword2();
+
+		methods = actionkeyword.getClass().getMethods();
+	}
+
+	public  void executekeword() throws IllegalAccessException, InvocationTargetException
+	{
+		for (int i=0; i<methods.length; i++)
+		{
+			if(methods[i].getName().equalsIgnoreCase(Excelutli2.keywordcolumnvalue))
+			{
+				methods[i].invoke(actionkeyword);
+				break;
+			}
+		}
+	}
+	public void findWebelementsToBeUsed()
+	{
+		switch (Excelutli2.locatername)
+		{
+		case ConstantsKwd.ID:
+			Locator = Locators.getId(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.NAME:
+			Locator = Locators.getName(Excelutli2.locatervalue);
+			break;
+  	case ConstantsKwd.CLASSNAME:
+			Locator = Locators.getclassName(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.XPATH:
+			Locator = Locators.getxpath(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.LINK_TEXT:
+			Locator = Locators.getLinkText(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.PARTIAL_LINK_TEXT:
+			Locator = Locators.getPartialLinkText(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.TAGNAME:
+			Locator = Locators.getTagName(Excelutli2.locatervalue);
+			break;
+		case ConstantsKwd.CSS_SELECTOR:
+			Locator = Locators.getCssSelector(Excelutli2.locatervalue);
+				break;
+		}
+	}
+	
+	public static void main(String[] args) throws IOException, IllegalAccessException, InvocationTargetException
+	{
+		Excelutli2 uti2 = new Excelutli2();
+
+		uti2.readexce2(ConstantsKwd.Excel_location);
+
+		Engine2 engine2 = new Engine2();
+		
+		for(int row=1; row<=Excelutli2.totalRows; row++)
+		{
+			
+		uti2.getcellvalueexcel2(row, ConstantsKwd.LOCATOR_COLUMN, ConstantsKwd.KEYWORD_COLUMN, ConstantsKwd.DATA_COLUMN);
+		
+			engine2.findWebelementsToBeUsed();
+			engine2.executekeword();
+		}
+	}
+}
