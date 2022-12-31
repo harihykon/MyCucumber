@@ -1,0 +1,87 @@
+package keywordDriven2;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
+
+import excelUtilities2.Excelutli2;
+import executionengine2.Engine2;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Actionkeyword2 {
+	static WebDriver driver;
+
+	public static void openbrowser()
+	{
+/*		if(Excelutli2.datacolumnvalue.equalsIgnoreCase("chrome"))
+		{
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+			driver.manage().window().maximize();	
+		}
+*/
+		switch(Excelutli2.datacolumnvalue)
+		{
+		case "chrome":
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		break;
+		case "firefox":
+		WebDriverManager.firefoxdriver().setup();
+		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
+		break;
+		case "safari":
+			WebDriverManager.safaridriver().setup();
+			driver = new SafariDriver();
+			driver.manage().window().maximize();
+			break;
+		case "msedge":
+			WebDriverManager.edgedriver().setup();
+			driver = new EdgeDriver();
+			driver.manage().window().maximize();
+			break;
+		default:
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+			driver.manage().window().maximize();
+			break;
+		}
+		
+	}
+	public static void gotourl() throws InterruptedException
+	{
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+//		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+//		Thread.sleep(5000);
+	}
+	public static void username() throws InterruptedException
+	{
+//		WebElement findElement = driver.findElement(By.xpath("//input[@placeholder='Username']"));
+//		findElement.sendKeys("Admin");
+      WebElement findElement = driver.findElement(Engine2.Locator);
+		  findElement.sendKeys(Excelutli2.datacolumnvalue);
+//	  driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+//	  Thread.sleep(5000);
+	}
+	public static void password() throws InterruptedException
+	{
+//		WebElement findElement = driver.findElement(By.xpath("//input[@placeholder='Password']"));
+//		findElement.sendKeys("admin123");
+		  WebElement findElement = driver.findElement(Engine2.Locator);
+		  findElement.sendKeys(Excelutli2.datacolumnvalue);
+//	  driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+//	  Thread.sleep(5000);
+	}
+	public static void quit()
+	{
+		driver.quit();
+	}
+}
