@@ -1,0 +1,55 @@
+package excelUtilities2;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Excelutli2 {
+
+	FileInputStream file;
+	XSSFSheet sheet;
+	XSSFWorkbook workbook;
+	XSSFCell cell;
+	public static String locatorcolumnvalue;
+	public static String locatername;
+	public static String locatervalue;
+	public static String keywordcolumnvalue;
+	public static String datacolumnvalue;
+	public static int totalRows;
+	
+	public void readexce2(String loc) throws IOException
+	{
+		file = new FileInputStream(loc);//"F:\Studies\Keyworddriven.xlsx"
+
+		workbook = new XSSFWorkbook(file);
+
+		sheet = workbook.getSheet("Sheet1");
+		
+		totalRows = sheet.getLastRowNum();
+	}
+
+	public void getcellvalueexcel2(int row, int locatorcolumn, int keywordcolumn, int datacolumn) throws IOException
+	{
+		locatorcolumnvalue = sheet.getRow(row).getCell(locatorcolumn).toString().trim();
+
+//		System.out.println(locatorcolumnvalue);
+		
+		if(!locatorcolumnvalue.contains("NA"))
+		{
+			locatername = locatorcolumnvalue.split("=")[0].toString().trim();
+			locatervalue = locatorcolumnvalue.split("=")[1].toString().trim();
+		}
+		else
+		{
+			locatername = "NA";
+			locatervalue = "NA";
+		}
+		keywordcolumnvalue = sheet.getRow(row).getCell(keywordcolumn).toString().trim();
+		datacolumnvalue = sheet.getRow(row).getCell(datacolumn).toString().trim();
+		
+		System.out.println(locatername+" : "+locatervalue+" keyword : " +keywordcolumnvalue+" data : "+datacolumnvalue);
+	}
+}
