@@ -1,0 +1,11 @@
+public class Jenkins {
+
+ public static void main(String[] args)
+{
+  // TODO Auto-generated method stub
+    System.out.println("Hello Agni");
+System.out.println("Hello Nathan");
+System.out.println("Hello Amanda");
+System.out.println("Hello Mark");
+ }
+}
