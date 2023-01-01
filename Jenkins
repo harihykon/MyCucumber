@@ -1,9 +1,8 @@
 public class Jenkins {
 
- public static void main(String[] args)
+public static void main(String[] args)
 {
-  // TODO Auto-generated method stub
-    System.out.println("Hello Agni");
+// TODO Auto-generated method stub
 System.out.println("Hello Nan");
 System.out.println("Hello Amand");
 System.out.println("Hello Marky");
