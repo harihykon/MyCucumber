@@ -1,0 +1,23 @@
+package javaConcepts;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+public class UsingBufferedWriter {
+	@Test
+	public void BufferedWriterExample() throws IOException
+	{
+
+	String Location = "BufferedWriter.txt";
+	String Content = "Happy New Year 2023";
+	
+	FileWriter file = new FileWriter(Location);
+	BufferedWriter bufferedwriter = new BufferedWriter(file);
+	bufferedwriter.write(Content);
+	bufferedwriter.close();
+	}
+
+}
