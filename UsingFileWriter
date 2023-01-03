@@ -1,0 +1,20 @@
+package javaConcepts;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.testng.annotations.*;
+
+public class UsingFileWriter {
+	@Test
+	public void FileWriterExample() throws IOException
+	{
+
+	String Location = "UsingFileWriter.txt";
+	String Content = "Hello world!!!";
+	
+	FileWriter file = new FileWriter(Location);
+	file.write(Content);
+	file.close();
+	}
+}
