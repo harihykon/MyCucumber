@@ -1,0 +1,22 @@
+package javaConcepts;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.testng.annotations.*;
+
+public class UsingBufferedReader {
+	@Test
+	public void BufferedReaderExample() throws IOException
+	{
+
+		String Location = "1.txt";
+
+		FileReader file = new FileReader(Location);
+		BufferedReader reader = new BufferedReader(file);
+		String readLine = reader.readLine();
+		System.out.println(readLine);
+
+	}
+}
