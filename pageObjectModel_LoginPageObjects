@@ -1,0 +1,16 @@
+package pageObjectModel;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LoginPageObjects {
+	
+	@FindBy(xpath="\\*[@name='username']")
+	public static WebElement username;
+
+	@FindBy(xpath="\\*[@name='password']")
+	public static WebElement password;
+	
+	@FindBy(xpath="\\*[@type='submit']")
+	public static WebElement submitButton;
+}
