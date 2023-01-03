@@ -1,0 +1,31 @@
+package testCasees;
+
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
+
+import commonFunctions.CommonFunctions;
+import pageObjectModel.DashboardPageObjects;
+import pageObjectModel.LoginPageObjects;
+
+public class Pending_Live_Request extends CommonFunctions{
+
+	public void login()
+	{
+		PageFactory.initElements(driver, LoginPageObjects.class);
+		LoginPageObjects.username.sendKeys(properties.getProperty("username"));
+		LoginPageObjects.password.sendKeys(properties.getProperty("password"));
+		LoginPageObjects.submitButton.click();
+	}
+
+	public void dashboardlink()
+	{
+		PageFactory.initElements(driver, DashboardPageObjects.class);
+		DashboardPageObjects.boardlink.click();
+	}
+	
+	public void VerifyPendingLeaveRequest()
+	{
+		login();
+		dashboardlink();
+	}
+}
