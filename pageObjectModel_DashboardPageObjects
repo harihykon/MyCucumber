@@ -1,0 +1,11 @@
+package pageObjectModel;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class DashboardPageObjects {
+	
+	@FindBy(linkText="/web/index.php/dashboard/index")
+	public static WebElement boardlink;
+	
+}
