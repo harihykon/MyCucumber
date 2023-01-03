@@ -1,0 +1,123 @@
+package seleniumExample;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.io.FileHandler;
+import org.testng.annotations.*;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class ExtentReportExamp {
+	
+	ExtentReports extentreport;
+	ExtentHtmlReporter htmlReporter;
+	ExtentTest testcases;
+	
+	WebDriver driver;
+	@Test
+	public void Google() throws IOException
+	{
+		testcases=extentreport.createTest("verify google title");
+		testcases.log(Status.INFO, "Navigating to google");
+		driver.get("https://www.google.com/");
+		String title = driver.getTitle();
+		testcases.log(Status.INFO, "Actual Title : "+ title);
+		testcases.log(Status.INFO, "Expected Title : "+" Google");
+		testcases.log(Status.INFO, "Verification of Actual and Expected title ");
+		if(title.equals("Google"))
+		{
+			testcases.log(Status.PASS, "Actual title and Expected title are equal");
+			//System.out.println("Passed");
+		}
+		else
+		{
+			testcases.log(Status.FAIL, "Actual title and Expected title are not equal");
+			TakesScreenshot screenshot = (TakesScreenshot) driver;
+			File temp = screenshot.getScreenshotAs(OutputType.FILE);
+			File perm = new File("google.png");
+			FileHandler.copy(temp, perm);
+			testcases.addScreenCaptureFromPath("google.png");
+			//System.out.println("Failed");
+		}
+	}
+	@Test
+	public void Yahoo() throws IOException
+	{
+		testcases=extentreport.createTest("verify yahoo title");
+		testcases.log(Status.INFO, "Navigating to yahoo");
+		driver.get("https://in.search.yahoo.com/?fr2=inr");
+		String title2 = driver.getTitle();
+		testcases.log(Status.INFO, "Actual Title : "+ title2);
+		testcases.log(Status.INFO, "Expected Title : "+" Yahoo Search - Web Searc");
+		testcases.log(Status.INFO, "Verification of Actual and Expected title ");
+		if(title2.equals("Yahoo Search - Web Searc"))
+		{
+			testcases.log(Status.PASS, "Actual title and Expected title are equal");
+			//System.out.println("Passed");
+		}
+		else
+		{
+			testcases.log(Status.FAIL, "Actual title and Expected title are not equal");
+			TakesScreenshot screenshot = (TakesScreenshot) driver;
+			File temp = screenshot.getScreenshotAs(OutputType.FILE);
+			File perm = new File("yahoo.png");
+			FileHandler.copy(temp, perm);
+			testcases.addScreenCaptureFromPath("yahoo.png");
+			//System.out.println("Failed");
+		}
+	}
+	
+	@Test
+	public void Facebook() throws IOException
+	{
+		testcases=extentreport.createTest("verify facebook title");
+		testcases.log(Status.INFO, "Navigating to facebook");
+		driver.get("https://www.facebook.com/");
+		String title3 = driver.getTitle();
+		testcases.log(Status.INFO, "Actual Title : "+ title3);
+		testcases.log(Status.INFO, "Expected Title : "+" Facebook – log in or sign up");
+		testcases.log(Status.INFO, "Verification of Actual and Expected title ");
+		if(title3.equals("Facebook – log in or sign up"))
+		{
+			testcases.log(Status.PASS, "Actual title and Expected title are equal");
+			//System.out.println("Passed");
+		}
+		else
+		{
+			testcases.log(Status.FAIL, "Actual title and Expected title are not equal");
+			TakesScreenshot screenshot = (TakesScreenshot) driver;
+			File temp = screenshot.getScreenshotAs(OutputType.FILE);
+			File perm = new File("facebook.png");
+			FileHandler.copy(temp, perm);
+			testcases.addScreenCaptureFromPath("facebook.png");
+			//System.out.println("Failed");
+		}
+	}
+	
+	@BeforeTest
+	public void LaunchBrowser()
+	{
+		extentreport = new ExtentReports();
+		htmlReporter = new ExtentHtmlReporter("ExtentReport.html");
+		extentreport.attachReporter(htmlReporter);
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+	}
+	
+	@AfterTest
+	public void CloseBrowser()
+	{
+	driver.quit();
+	extentreport.flush();
+	}
+}
