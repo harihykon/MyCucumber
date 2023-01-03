@@ -1,0 +1,22 @@
+package javaConcepts;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+public class UsingFileOutputStream {
+	
+		@Test
+		public void FileOutputStreamExample() throws IOException
+		{
+		String Location = "FileOutputStream.txt";
+		String Content = "Happy New Year 2024";
+		
+		FileOutputStream file = new FileOutputStream(Location);
+		byte[] bytes = Content.getBytes();
+		file.write(bytes);
+		file.close();
+		}
+
+}
