@@ -1,0 +1,12 @@
+package pageObjectModel;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class UserRolePageObjects {
+	
+	@FindBy(linkText="/web/index.php/admin/viewAdminModule")
+	public static WebElement adminLink;			
+
+	
+}
