@@ -1,0 +1,23 @@
+package testCasees;
+
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
+
+import commonFunctions.CommonFunctions;
+import pageObjectModel.UserRolePageObjects;
+
+public class Check_User_Role extends CommonFunctions{
+
+public void adminlinks()
+{
+	PageFactory.initElements(driver, UserRolePageObjects.class);
+	UserRolePageObjects.adminLink.click();
+}
+
+public void checkUser()
+	{
+		adminlinks();
+		
+	}
+}
