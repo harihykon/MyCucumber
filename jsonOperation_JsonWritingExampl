@@ -1,0 +1,30 @@
+package jsonOperation;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.google.gson.JsonObject;
+
+public class JsonWritingExampl {
+
+	public static void main(String[] args) throws IOException
+	{
+		JSONObject jsonobject = new JSONObject();
+		jsonobject.put("Name", "Arya");
+		jsonobject.put("Age", "2");
+
+		JSONArray array = new JSONArray();
+		array.add("magic smile");
+		array.add("orange");
+
+		jsonobject.put("SQ", array);
+
+		FileWriter file = new FileWriter("sample.json");
+		file.write(jsonobject.toString());
+//		file.write(jsonobject.toJSONString());
+		file.close();
+	}
+}
