@@ -808,3 +808,215 @@ public class verifyceonamestepdef {
 
 	}
 }
+
+
+package day1;
+import java.io.File;
+import java.util.Properties;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.support.PageFactory;
+public class commonutilities {
+private static commonutilities commonutilitiesInstance=null;
+private commonutilities()
+{
+}
+public static commonutilities getInstance()
+{
+if(commonutilitiesInstance==null)
+{
+commonutilitiesInstance = new commonutilities(); 
+}
+return commonutilitiesInstance;
+}
+public void loadproperties()
+{
+Properties properties = new Properties();
+try
+{
+properties.load(getClass().getResourceAsStream("/config.properties"));
+}
+catch (Exception e)
+{
+e.printStackTrace();
+}
+constants.APP_URL = properties.getProperty("APP_URL");
+constants.BROWSER = properties.getProperty("BROWSER");
+constants.USERNAME = properties.getProperty("USERNAME");
+constants.PASSWORD = properties.getProperty("PASSWORD");
+constants.CHROME_DRIVER_LOCATION = properties.getProperty("CHROME_DRIVER_LOCATION");
+}
+public void InitWebElements()
+{
+PageFactory.initElements(Drivermanager.getDriver(), LoginPage.getInstance());
+PageFactory.initElements(Drivermanager.getDriver(), HomePage.getInstance());
+PageFactory.initElements(Drivermanager.getDriver(), DirectoryPage.getInstance());
+}
+public void takeScreenShot()
+{
+/*TakesScreenshot screenshot = (TakesScreenshot) driver;
+File temp = screenshot.getScreenshotAs(OutputType.FILE);
+File perm = new File("facebook.png");
+FileHandler.copy(screenshot, new File("facebook.png");*/
+File screenshot = ((TakesScreenshot) Drivermanager.getDriver()).getScreenshotAs(OutputType.FILE);
+try
+{
+FileUtils.copyFile(screenshot, new File("facebook.png"));
+}
+catch (Exception e) {
+System.out.println(e.getMessage());
+}
+}
+}
+
+package day1;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import io.cucumber.java.*;
+
+public class commonstepdefinition {
+	
+	
+	private static final Logger logger = LogManager.getLogger(commonstepdefinition.class);
+	
+	@Before
+	public void beforescenario()
+	{
+		logger.info("Execution started");
+		
+		try {
+			logger.info("Instantiation the commonutilities");
+						
+			logger.info("Loading the properties file");
+			commonutilities.getInstance().loadproperties();
+			
+			logger.info("checking driver is null or not");
+			if(Drivermanager.getDriver()==null)
+			{
+			logger.info("Driver is  null. Instantiation init");
+			Drivermanager.launchbrowser();
+			commonutilities.getInstance().InitWebElements();
+			}
+			}	
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			}
+
+}
+
+
+package day1;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.ui.Select;
+
+import io.cucumber.java.en.*;
+
+public class verifyceonamestepdef {
+
+	private static final Logger logger = LogManager.getLogger(verifyceonamestepdef.class);
+
+	@Given("the user is logged in successfully and is on home page")
+	public void the_user_is_logged_in_successfully_and_is_on_home_page() {
+		//System.out.println("the user is logged in successfully and is on home page");
+		//Login
+		try
+		{
+			Drivermanager.getDriver().get(constants.APP_URL);
+			LoginPage.getInstance().enterUsername(constants.USERNAME);
+			LoginPage.getInstance().enterPassword(constants.PASSWORD);
+			LoginPage.getInstance().clickLoginButton();
+			String url = Drivermanager.getDriver().getCurrentUrl();
+			if(url.contains("dasboard"))
+			{
+				logger.info("the user is logged in successful");
+			}
+		}
+		catch (Exception e)
+		{
+			logger.error(e);
+			commonutilities.getInstance().takeScreenShot();
+		}
+
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("the user clicks on the directory option from the menu bar")
+	public void the_user_clicks_on_the_directory_option_from_the_menu_bar() {
+		//System.out.println("the user clicks on the directory option from the menu bar");
+		try
+		{
+			HomePage.getInstance().clickDirectory();
+			logger.info("the user is clicked directory");
+		}
+		catch (Exception e)
+		{
+			logger.error(e);
+			commonutilities.getInstance().takeScreenShot();
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+
+	@When("the user select the job title as {string} from the drop down")
+	public void the_user_select_the_job_title_as_from_the_drop_down(String cname) {
+		//System.out.println("the user select the job title as " +cname+ " from the drop down");
+		try
+		{		
+			DirectoryPage.getInstance().clicksSelect();
+			DirectoryPage.getInstance().clicksJobtitle();
+			logger.info("the user select the job title as " +cname+  " from the drop down");
+		}
+		catch (Exception e)
+		{
+			logger.error(e);
+			commonutilities.getInstance().takeScreenShot();
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("click the search button")
+	public void click_the_search_button() {
+		//System.out.println("click the search button");
+		try
+		{
+			DirectoryPage.getInstance().clicksSearch();		
+			logger.info("the user click the search button");
+		}
+		catch (Exception e)
+		{
+			logger.error(e);
+			commonutilities.getInstance().takeScreenShot();
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@Then("user should see the ceo name as {string}")
+	public void user_should_see_the_ceo_name_as(String jname) {
+		System.out.println("user should see the ceo name as " +jname);
+		try
+		{
+			String actualName = DirectoryPage.getInstance().nameGets();
+
+			if(actualName.equals(jname))
+			{
+				logger.info("user should see the ceo name as " +jname);
+			}
+		}
+		catch (Exception e)
+		{
+			logger.error(e);
+			commonutilities.getInstance().takeScreenShot();
+		}
+	}
+}
+
+
