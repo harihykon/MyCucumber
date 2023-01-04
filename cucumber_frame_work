@@ -1020,3 +1020,160 @@ public class verifyceonamestepdef {
 }
 
 
+*******************************
+
+package day1;
+
+import java.io.File;
+import java.util.Properties;
+
+import javax.lang.model.element.Element;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+
+public class commonutilities {
+	
+	private static commonutilities commonutilitiesInstance=null;
+	
+	private commonutilities()
+	{
+		
+	}
+	
+	public static commonutilities getInstance()
+	{
+		if(commonutilitiesInstance==null)
+		{
+			commonutilitiesInstance = new commonutilities();			
+		}
+		return commonutilitiesInstance;
+	
+	}
+
+	public void loadproperties()
+	{
+
+		Properties properties = new Properties();
+		try
+		{
+			properties.load(getClass().getResourceAsStream("/config.properties"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		constants.APP_URL = properties.getProperty("APP_URL");
+		constants.BROWSER = properties.getProperty("BROWSER");
+		constants.USERNAME = properties.getProperty("USERNAME");
+		constants.PASSWORD = properties.getProperty("PASSWORD");
+		constants.CHROME_DRIVER_LOCATION = properties.getProperty("CHROME_DRIVER_LOCATION");
+	}
+	
+	
+	public void InitWebElements()
+	{
+		PageFactory.initElements(Drivermanager.getDriver(), LoginPage.getInstance());
+		PageFactory.initElements(Drivermanager.getDriver(), HomePage.getInstance());
+		PageFactory.initElements(Drivermanager.getDriver(), DirectoryPage.getInstance());
+	}
+	
+	public void takeScreenShot()
+	{
+		/*TakesScreenshot screenshot = (TakesScreenshot) driver;
+		File temp = screenshot.getScreenshotAs(OutputType.FILE);
+		File perm = new File("facebook.png");
+		FileHandler.copy(screenshot, new File("facebook.png");*/
+		File screenshot = ((TakesScreenshot) Drivermanager.getDriver()).getScreenshotAs(OutputType.FILE);
+		
+		try
+		{
+		FileUtils.copyFile(screenshot, new File(commonstepdefinition.getScenarioName()+".png"));
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		}
+	
+	public void highlightElement(WebElement element)
+	{
+		JavascriptExecutor executor = (JavascriptExecutor) Drivermanager.getDriver();
+		executor.executeScript("arguments[0].setAttribute('style','border: 2px solid red');", element);
+	}
+}
+
+*******************************************************
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LoginPage {
+	
+	
+	public static LoginPage LoginInstance;
+	
+	private LoginPage()
+	{
+		
+	}
+	
+	public static LoginPage getInstance()
+	{
+		if(LoginInstance==null)
+		{
+		LoginInstance = new LoginPage();
+		}
+		return LoginInstance;
+		
+	}
+	
+	
+	@FindBy(xpath="//*[@name='username']")
+	//public static WebElement USERNAME;
+	private WebElement USERNAME;
+	
+	@FindBy(xpath="//*[@name='password']")
+	//public static WebElement PASSWORD;
+	private WebElement PASSWORD;
+	
+	@FindBy(xpath="//*[@type='submit']")
+	//public static WebElement LOGIN_BUTTON;
+	private WebElement LOGIN_BUTTON;
+
+	/*public WebElement getUSERNAME() {
+		return USERNAME;
+	}
+
+	public WebElement getPASSWORD() {
+		return PASSWORD;
+	}
+
+	public WebElement getLOGIN_BUTTON() {
+		return LOGIN_BUTTON;
+	}*/
+	
+	public void enterUsername(String userName)
+	{
+		commonutilities.getInstance().highlightElement(USERNAME);
+		USERNAME.sendKeys(userName);
+	}
+	
+	public void enterPassword(String passWord)
+	{
+		PASSWORD.sendKeys(passWord);
+	}
+	
+	public void clickLoginButton()
+	{
+		LOGIN_BUTTON.click();
+	}
+
+}
+
