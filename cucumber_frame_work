@@ -1,0 +1,810 @@
+package day1;
+
+import java.util.Properties;
+
+import org.openqa.selenium.support.PageFactory;
+
+public class commonutilities {
+
+public void loadproperties()
+{
+Properties properties = new Properties();
+try
+{
+properties.load(getClass().getResourceAsStream("/config.properties"));
+}
+catch (Exception e)
+{
+e.printStackTrace();
+}
+constants.APP_URL = properties.getProperty("APP_URL");
+constants.BROWSER = properties.getProperty("BROWSER");
+constants.USERNAME = properties.getProperty("USERNAME");
+constants.PASSWORD = properties.getProperty("PASSWORD");
+constants.CHROME_DRIVER_LOCATION = properties.getProperty("CHROME_DRIVER_LOCATION");
+}
+public void InitWebElements()
+{
+PageFactory.initElements(Drivermanager.getDriver(), LoginPage.class);
+PageFactory.initElements(Drivermanager.getDriver(), HomePage.class);
+PageFactory.initElements(Drivermanager.getDriver(), DirectoryPage.class);
+}
+}
+
+
+
+
+package day1;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import io.cucumber.java.*;
+
+public class commonstepdefinition {
+
+private static final Logger logger = LogManager.getLogger(commonstepdefinition.class);
+
+@Before
+public void beforescenario()
+{
+logger.info("Execution started");
+		
+try {
+logger.info("Instantiation the commonutilities");
+commonutilities commonutilities = new commonutilities();
+			
+logger.info("Loading the properties file");
+commonutilities.loadproperties();
+			
+logger.info("checking driver is null or not");
+if(Drivermanager.getDriver()==null)
+{
+logger.info("Driver is  null. Instantiation init");
+Drivermanager.launchbrowser();
+commonutilities.InitWebElements();
+}
+}	
+catch (Exception e)
+{
+e.printStackTrace();
+}
+}
+}
+
+
+
+
+
+package day1;
+public class constants {
+public static String CHROME_DRIVER_LOCATION;
+public static String CHROME_DRIVER="webdriver.chrome.driver";
+public static String APP_URL;
+public static String BROWSER;
+public static String USERNAME;
+public static String PASSWORD;
+}
+
+
+
+
+package day1;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Drivermanager {
+
+private static final Logger logger = LogManager.getLogger(Drivermanager.class);
+
+private static WebDriver driver = null;
+
+public static void launchbrowser() {
+try
+{
+switch (constants.BROWSER)
+{
+case "cc":
+WebDriverManager.chromedriver().setup();
+logger.info("Launching " +constants.BROWSER);
+driver = new ChromeDriver();
+driver.manage().window().maximize();
+break;
+case "ms":
+WebDriverManager.edgedriver().setup();
+logger.info("Launching " +constants.BROWSER);
+driver = new EdgeDriver();
+driver.manage().window().maximize();
+case "ff":
+WebDriverManager.firefoxdriver().setup();
+logger.info("Launching " +constants.BROWSER);
+driver = new FirefoxDriver();
+driver.manage().window().maximize();
+default:
+WebDriverManager.chromedriver().setup();
+logger.info("Launching " +constants.BROWSER);
+driver = new ChromeDriver();
+driver.manage().window().maximize();
+break;
+}
+}
+catch(Exception e)
+{
+e.printStackTrace();
+}
+}
+public static WebDriver getDriver() {
+return driver;
+}
+}
+
+
+
+APP_URL=https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+BROWSER=cc
+USERNAME=Admin
+PASSWORD=admin123
+CHROME_DRIVER_LOCATION="C:\\Users\\HARIKRISHNAN\\eclipse-workspace\\MyCucumber\\chromedriver.exe"
+**********************************************************************************
+status = warn
+# Rotate log file
+appender.rolling.type = RollingFile
+appender.rolling.name = LogToRollingFile
+appender.rolling.fileName = UI_automation_BDD.log
+appender.rolling.filePattern = logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz
+appender.rolling.layout.type = PatternLayout
+appender.rolling.layout.pattern = %d [%10-level] %C [%t] %m%n
+appender.rolling.policies.type = Policies
+appender.rolling.policies.time.type = TimeBasedTriggeringPolicy
+appender.rolling.policies.size.type = SizeBasedTriggeringPolicy
+appender.rolling.policies.size.size=10MB
+appender.rolling.strategy.type = DefaultRolloverStrategy
+appender.rolling.strategy.max = 10
+# Log to console and rolling file
+logger.app.name = day1
+logger.app.level = debug
+logger.app.additivity = false
+logger.app.appenderRef.rolling.ref = LogToRollingFile
+#logger.app.appenderRef.console.ref = LogToConsole
+rootLogger.level = info
+#rootLogger.appenderRef.stdout.ref = LogToConsole
+
+
+package day1;
+
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+//features = {"./src/test/resources/Myfeaturefiles/Login.feature"}, //path
+features = "C:\\Users\\HARIKRISHNAN\\eclipse-workspace\\MyCucumber\\src\\test\\resources\\Myfeaturefiles", //path ./src/test/resources/
+glue = "day1", // step definition
+dryRun = false, // compare feature file and step definition //snippet will make error and give missing snippet //Dry run will not allow script to execute
+monochrome = true //to remove unwanted symbols
+//publish = false, //to give the report
+//plugin = { "pretty","html:HTML/op.html", "junit:JUNIT/op.xml", "json:JSON/op.json"}//Generation of report in different
+//tags = "@Reg" //To choose particular scenario
+//tags = "@Getceoname", "@timesheet" //To choose both scenario when presented - AND Operation
+//tags = "@Getceoname, @timesheet" //To choose both scenario presented - OR Operation
+)
+public class MyRunner 
+{
+}
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LoginPage {
+		
+	@FindBy(xpath="//*[@name='username']")
+	public static WebElement USERNAME;
+		
+	@FindBy(xpath="//*[@name='password']")
+	public static WebElement PASSWORD;
+		
+	@FindBy(xpath="//*[@type='submit']")
+	public static WebElement LOGIN_BUTTON;
+	
+
+}
+
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class HomePage {
+	
+@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[1]/aside/nav/div[2]/ul/li[9]/a")
+public static WebElement DIRECTORY;
+
+}
+
+
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class DirectoryPage {
+		
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	public static WebElement CLICKS;
+	
+	@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	public static WebElement JOB_TITLE;
+	
+	
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[2]/button[2]")
+	public static WebElement SEARCH;
+	
+
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[2]/div/p[1]")
+	public static WebElement NAME;
+	
+
+}
+
+
+
+package day1;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.ui.Select;
+
+import io.cucumber.java.en.*;
+
+public class verifyceonamestepdef {
+	
+	private static final Logger logger = LogManager.getLogger(verifyceonamestepdef.class);
+
+	@Given("the user is logged in successfully and is on home page")
+	public void the_user_is_logged_in_successfully_and_is_on_home_page() {
+		//System.out.println("the user is logged in successfully and is on home page");
+		//Login
+		Drivermanager.getDriver().get(constants.APP_URL);
+		LoginPage.USERNAME().sendKeys(constants.USERNAME);
+		LoginPage.PASSWORD().sendKeys(constants.PASSWORD);
+		LoginPage.LOGIN_BUTTON().click();
+		String url = Drivermanager.getDriver().getCurrentUrl();
+		if(url.contains("dasboard"))
+		{
+			logger.info("the user is logged in successful");
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("the user clicks on the directory option from the menu bar")
+	public void the_user_clicks_on_the_directory_option_from_the_menu_bar() {
+		//System.out.println("the user clicks on the directory option from the menu bar");
+		
+		HomePage.DIRECTORY().click();
+		logger.info("the user is clicked directory");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+	
+
+	@When("the user select the job title as {string} from the drop down")
+	public void the_user_select_the_job_title_as_from_the_drop_down(String cname) {
+		//System.out.println("the user select the job title as " +cname+ " from the drop down");
+				
+		DirectoryPage.CLICKS().click();;
+		DirectoryPage.JOB_TITLE().click();
+		logger.info("the user select the job title as " +cname+  " from the drop down");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("click the search button")
+	public void click_the_search_button() {
+		//System.out.println("click the search button");
+		
+		DirectoryPage.SEARCH().click();		
+		logger.info("the user click the search button");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@Then("user should see the ceo name as {string}")
+	public void user_should_see_the_ceo_name_as(String jname) {
+		System.out.println("user should see the ceo name as " +jname);
+		
+		String actualName = DirectoryPage.NAME().getText();
+				
+		if(actualName.equals(jname))
+		{
+			logger.info("user should see the ceo name as " +jname);
+		}
+
+	}
+}
+
+
+
+package day1;
+
+import java.util.Properties;
+
+import org.openqa.selenium.support.PageFactory;
+
+public class commonutilities {
+
+	public void loadproperties()
+	{
+
+		Properties properties = new Properties();
+		try
+		{
+			properties.load(getClass().getResourceAsStream("/config.properties"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		constants.APP_URL = properties.getProperty("APP_URL");
+		constants.BROWSER = properties.getProperty("BROWSER");
+		constants.USERNAME = properties.getProperty("USERNAME");
+		constants.PASSWORD = properties.getProperty("PASSWORD");
+		constants.CHROME_DRIVER_LOCATION = properties.getProperty("CHROME_DRIVER_LOCATION");
+	}
+	
+	
+	public void InitWebElements()
+	{
+		PageFactory.initElements(Drivermanager.getDriver(), LoginPage.getInstance());
+		PageFactory.initElements(Drivermanager.getDriver(), HomePage.getInstance());
+		PageFactory.initElements(Drivermanager.getDriver(), DirectoryPage.getInstance());
+	}
+}
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LoginPage {
+	
+	
+	public static LoginPage LoginInstance;
+	
+	private LoginPage()
+	{
+		
+	}
+	
+	public static LoginPage getInstance()
+	{
+		if(LoginInstance==null)
+		{
+		LoginInstance = new LoginPage();
+		}
+		return LoginInstance;
+		
+	}
+	
+	
+	@FindBy(xpath="//*[@name='username']")
+	private WebElement USERNAME;
+	
+	@FindBy(xpath="//*[@name='password']")
+	private WebElement PASSWORD;
+	
+	@FindBy(xpath="//*[@type='submit']")
+	private WebElement LOGIN_BUTTON;
+
+	public WebElement getUSERNAME() {
+		return USERNAME;
+	}
+
+	public WebElement getPASSWORD() {
+		return PASSWORD;
+	}
+
+	public WebElement getLOGIN_BUTTON() {
+		return LOGIN_BUTTON;
+	}
+
+}
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class HomePage {
+	
+public static HomePage HomePageInstance;
+	
+	private HomePage()
+	{
+		
+	}
+	
+	public static HomePage getInstance()
+	{
+		if(HomePageInstance==null)
+		{
+			HomePageInstance = new HomePage();
+		}
+		return HomePageInstance;
+		
+	}
+
+	@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[1]/aside/nav/div[2]/ul/li[9]/a")
+	private WebElement DIRECTORY;
+
+	public WebElement getDIRECTORY() {
+		return DIRECTORY;
+	}
+}
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class DirectoryPage {
+	
+	
+	public static DirectoryPage DirectoryPageInstance;
+	
+	private DirectoryPage()
+	{
+		
+	}
+	
+	public static DirectoryPage getInstance()
+	{
+		if(DirectoryPageInstance==null)
+		{
+			DirectoryPageInstance = new DirectoryPage();
+		}
+		return DirectoryPageInstance;
+		
+	}
+	
+	
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	private WebElement CLICKS;
+
+	@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	private WebElement JOB_TITLE;
+	
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[2]/button[2]")
+	private WebElement SEARCH;
+
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[2]/div/p[1]")
+	private WebElement NAME;
+
+	public WebElement getCLICKS() {
+		return CLICKS;
+	}
+
+	public WebElement getJOB_TITLE() {
+		return JOB_TITLE;
+	}
+
+	public WebElement getSEARCH() {
+		return SEARCH;
+	}
+
+	public WebElement getNAME() {
+		return NAME;
+	}
+
+}
+
+
+package day1;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.ui.Select;
+
+import io.cucumber.java.en.*;
+
+public class verifyceonamestepdef {
+	
+	private static final Logger logger = LogManager.getLogger(verifyceonamestepdef.class);
+
+	@Given("the user is logged in successfully and is on home page")
+	public void the_user_is_logged_in_successfully_and_is_on_home_page() {
+		//System.out.println("the user is logged in successfully and is on home page");
+		//Login
+		Drivermanager.getDriver().get(constants.APP_URL);
+		LoginPage.getInstance().getUSERNAME().sendKeys(constants.USERNAME);
+		LoginPage.getInstance().getPASSWORD().sendKeys(constants.PASSWORD);
+		LoginPage.getInstance().getLOGIN_BUTTON().click();
+		String url = Drivermanager.getDriver().getCurrentUrl();
+		if(url.contains("dasboard"))
+		{
+			logger.info("the user is logged in successful");
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("the user clicks on the directory option from the menu bar")
+	public void the_user_clicks_on_the_directory_option_from_the_menu_bar() {
+		//System.out.println("the user clicks on the directory option from the menu bar");
+		
+		HomePage.getInstance().getDIRECTORY().click();
+		logger.info("the user is clicked directory");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+	
+
+	@When("the user select the job title as {string} from the drop down")
+	public void the_user_select_the_job_title_as_from_the_drop_down(String cname) {
+		//System.out.println("the user select the job title as " +cname+ " from the drop down");
+				
+		DirectoryPage.getInstance().getCLICKS().click();;
+		DirectoryPage.getInstance().getJOB_TITLE().click();
+		logger.info("the user select the job title as " +cname+  " from the drop down");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("click the search button")
+	public void click_the_search_button() {
+		//System.out.println("click the search button");
+		
+		DirectoryPage.getInstance().getSEARCH().click();		
+		logger.info("the user click the search button");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@Then("user should see the ceo name as {string}")
+	public void user_should_see_the_ceo_name_as(String jname) {
+		System.out.println("user should see the ceo name as " +jname);
+		
+		String actualName = DirectoryPage.getInstance().getNAME().getText();
+				
+		if(actualName.equals(jname))
+		{
+			logger.info("user should see the ceo name as " +jname);
+		}
+
+	}
+}
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LoginPage {
+	
+	
+	public static LoginPage LoginInstance;
+	
+	private LoginPage()
+	{
+		
+	}
+	
+	public static LoginPage getInstance()
+	{
+		if(LoginInstance==null)
+		{
+		LoginInstance = new LoginPage();
+		}
+		return LoginInstance;
+		
+	}
+	
+	
+	@FindBy(xpath="//*[@name='username']")
+	private WebElement USERNAME;
+	
+	@FindBy(xpath="//*[@name='password']")
+	private WebElement PASSWORD;
+	
+	@FindBy(xpath="//*[@type='submit']")
+	private WebElement LOGIN_BUTTON;
+
+	public void enterUsername(String userName)
+	{
+		USERNAME.sendKeys(userName);
+	}
+	
+	public void enterPassword(String passWord)
+	{
+		PASSWORD.sendKeys(passWord);
+	}
+	
+	public void clickLoginButton()
+	{
+		LOGIN_BUTTON.click();
+	}
+
+}
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class HomePage {
+	
+public static HomePage HomePageInstance;
+	
+	private HomePage()
+	{
+		
+	}
+	
+	public static HomePage getInstance()
+	{
+		if(HomePageInstance==null)
+		{
+			HomePageInstance = new HomePage();
+		}
+		return HomePageInstance;
+		
+	}
+
+	@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[1]/aside/nav/div[2]/ul/li[9]/a")
+	private WebElement DIRECTORY;
+
+	public void clickDirectory()
+	{
+		DIRECTORY.click();
+	}
+}
+
+
+
+package day1;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class DirectoryPage {
+	
+	
+	public static DirectoryPage DirectoryPageInstance;
+	
+	private DirectoryPage()
+	{
+		
+	}
+	
+	public static DirectoryPage getInstance()
+	{
+		if(DirectoryPageInstance==null)
+		{
+			DirectoryPageInstance = new DirectoryPage();
+		}
+		return DirectoryPageInstance;
+		
+	}
+	
+	
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	private WebElement CLICKS;
+
+	@FindBy(xpath ="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[1]/div/div[2]/div/div[2]/div/div/div[1]")
+	private WebElement JOB_TITLE;
+	
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div[2]/form/div[2]/button[2]")
+	private WebElement SEARCH;
+
+	@FindBy(xpath="//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[2]/div/p[1]")
+	private WebElement NAME;
+
+	public void clicksSelect()
+	{
+		CLICKS.click();
+	}
+	
+	public void clicksJobtitle()
+	{
+		JOB_TITLE.click();
+	}
+	
+	public void clicksSearch()
+	{
+		SEARCH.click();
+	}
+	
+	public String nameGets()
+{
+return NAME.getText();
+}
+}
+
+
+package day1;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.ui.Select;
+
+import io.cucumber.java.en.*;
+
+public class verifyceonamestepdef {
+	
+	private static final Logger logger = LogManager.getLogger(verifyceonamestepdef.class);
+
+	@Given("the user is logged in successfully and is on home page")
+	public void the_user_is_logged_in_successfully_and_is_on_home_page() {
+		//System.out.println("the user is logged in successfully and is on home page");
+		//Login
+		Drivermanager.getDriver().get(constants.APP_URL);
+		LoginPage.getInstance().enterUsername(constants.USERNAME);
+		LoginPage.getInstance().enterPassword(constants.PASSWORD);
+		LoginPage.getInstance().clickLoginButton();
+		String url = Drivermanager.getDriver().getCurrentUrl();
+		if(url.contains("dasboard"))
+		{
+			logger.info("the user is logged in successful");
+		}
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("the user clicks on the directory option from the menu bar")
+	public void the_user_clicks_on_the_directory_option_from_the_menu_bar() {
+		//System.out.println("the user clicks on the directory option from the menu bar");
+		
+		HomePage.getInstance().clickDirectory();
+		logger.info("the user is clicked directory");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+	
+
+	@When("the user select the job title as {string} from the drop down")
+	public void the_user_select_the_job_title_as_from_the_drop_down(String cname) {
+		//System.out.println("the user select the job title as " +cname+ " from the drop down");
+				
+		DirectoryPage.getInstance().clicksSelect();
+		DirectoryPage.getInstance().clicksJobtitle();
+		logger.info("the user select the job title as " +cname+  " from the drop down");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@When("click the search button")
+	public void click_the_search_button() {
+		//System.out.println("click the search button");
+		
+		DirectoryPage.getInstance().clicksSearch();		
+		logger.info("the user click the search button");
+		Drivermanager.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
+
+	@Then("user should see the ceo name as {string}")
+	public void user_should_see_the_ceo_name_as(String jname) {
+		System.out.println("user should see the ceo name as " +jname);
+		
+		String actualName = DirectoryPage.getInstance().nameGets();
+				
+		if(actualName.equals(jname))
+		{
+			logger.info("user should see the ceo name as " +jname);
+		}
+
+	}
+}
