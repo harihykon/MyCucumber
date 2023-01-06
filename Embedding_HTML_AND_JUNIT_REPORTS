@@ -1,0 +1,1 @@
+newman run CollectionRunnerDemoCopy.postman_collection.json -e QA_ENV.postman_environment.json
