@@ -1,0 +1,16 @@
+
+NEWMANHTML
+
+npm i -g newman-reporter-htmlextra
+
+
+NEWMAN JUNIT
+
+npm i -g newman-reporter-junitfullreport
+
+
+cmd
+newman run CollectionRunnerDemoCopy.postman_collection.json -r htmlextra
+
+cmd
+newman run CollectionRunnerDemoCopy.postman_collection.json -r junit --reporter-junit-export
