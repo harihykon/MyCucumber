@@ -1,0 +1,21 @@
+>newman run https://api.postman.com/collections/25194404-a6c8a54e-315c-471f-a862-80eb97fe14b2?access_key=PMAT-01GP3PYV3H4W3QN4NTTCH984Q6 -d Employees.json --folder NewmanCollectionFolderJSON
+
+newman run https://api.postman.com/collections/25194404-a6c8a54e-315c-471f-a862-80eb97fe14b2?access_key=PMAT-01GP3PYV3H4W3QN4NTTCH984Q6 -d employeeesscsv.csv --folder NewManCollectionFolderCSV
+
+newman run https://api.postman.com/collections/25194404-a6c8a54e-315c-471f-a862-80eb97fe14b2?access_key=PMAT-01GP3PYV3H4W3QN4NTTCH984Q6 -d Employees.json
+
+newman run https://api.postman.com/collections/25194404-a6c8a54e-315c-471f-a862-80eb97fe14b2?access_key=PMAT-01GP3PYV3H4W3QN4NTTCH984Q6 -d employeeesscsv.csv
+
+newman run https://api.postman.com/collections/25194404-1097f0bd-7ba7-4f2d-99ed-932bfddf570a?access_key=PMAT-01GP3P91V9PC64NWY6M7MP0BQ0 -n 3
+
+newman run https://api.postman.com/collections/25194404-1097f0bd-7ba7-4f2d-99ed-932bfddf570a?access_key=PMAT-01GP3P91V9PC64NWY6M7MP0BQ0
+
+newman run CollectionRunnerDemoCopy.postman_collection.json
+
+newman run https://api.postman.com/collections/25194404-1097f0bd-7ba7-4f2d-99ed-932bfddf570a?access_key=PMAT-01GP3MSXFTR0Y36FF6YYBQTY0Q
+
+newman run CollectionRunnerDemoCopy.postman_collection.json
+
+newman run CollectionRunnerDemo.postman_collection.json
+
+npm install -g newman
