@@ -43,7 +43,7 @@ public class Action extends BaseClass implements ActionInterface {
 	}
 
 	@Override
-	public void click(WebDriver driver, WebElement elee) {
+	public void click(WebDriver driver, WebElement ele) {
 
 		Actions act = new Actions(driver);
 		act.moveToElement(ele).click().build().perform();
